@@ -18,8 +18,8 @@ let DecimalPower (x: decimal) (y:decimal) =
     Math.Pow ((TransformToDouble x), (TransformToDouble y))
     |> TransformToDecimal
 
-let MultiplyBy14922 x = 
-    1.4922m * x
+let MultiplyByConstant variable constant = 
+    variable * constant
 
 let Mcu grainColor grainWeightLbs VolGal : decimal =
     (grainColor * grainWeightLbs) / VolGal
@@ -27,4 +27,8 @@ let Mcu grainColor grainWeightLbs VolGal : decimal =
 let SrmColor grainColor grainWeightLbs VolGal =
     Mcu grainColor grainWeightLbs VolGal
     |> DecimalPower 0.6859m
-    |> MultiplyBy14922
+    |> MultiplyByConstant 1.4922m
+
+let Ebc grainColor grainWeightLbs VolGal = 
+    SrmColor grainColor grainWeightLbs VolGal
+    |> MultiplyByConstant 1.97m
