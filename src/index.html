@@ -1,13 +1,34 @@
 <!doctype html>
 <html>
+
 <head>
-  <title>Simple Fable App</title>
+  <title>SRM Calculator</title>
   <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="fable.ico" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
+
 <body>
-  <h1>Using HTML5 Canvas</h1>
-  <canvas align="center" id="canvas" width="1000" height="800"></canvas>
+  <div>
+    <div id="inputs">
+      <input type="number" step="any" id="batchSize" placeholder="Batch Size (gallons)" value="" />
+      <input type="number" step="any" id="amount1" placeholder="Pounds" value="" />
+      <select>
+        <option value="" disabled selected>Select Grain ...</option>
+        <option value="1">Abbey Malt</option>
+      </select>
+    </div>
+    <button type="button" id="calculate">Calculate</button>
+    <div id="results">
+      <div id="srmResult"></div>
+      <div id="ebcResult"></div>
+      <canvas align="center" id="approxColor" width="1000" height="1000"></canvas>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
+
 </html>
