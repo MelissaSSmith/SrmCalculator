@@ -1,13 +1,11 @@
-{
-    "data": [
-        {
-            "Id": 1,
-            "Name": "Abbey Malt",
-            "Country": "German",
-            "Category": "Grain",
-            "Type": "Base Malt",
-            "DegressLovibond": 17,
-            "PPG": 33 
-        }
-    ]
-}
+[
+    {
+        "Id": 1,
+        "Name": "Abbey Malt",
+        "Country": "German",
+        "Category": "Grain",
+        "Type": "Base Malt",
+        "DegressLovibond": 17,
+        "PPG": 33 
+    }
+]

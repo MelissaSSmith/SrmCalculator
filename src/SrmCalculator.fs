@@ -2,7 +2,6 @@ module SrmCalculations
 
 open Fable.Core
 open System
-open System.Xml.Linq
 
 [<Emit("isNaN(parseFloat($0)) ? null : parseFloat($0)  ")>]
 let ParseFloat (e : obj) : float option = jsNative

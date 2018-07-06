@@ -2,5 +2,8 @@ source https://nuget.org/api/v2
 storage:none
 
 clitool dotnet-fable
+nuget FSharp.Compiler.Tools
 nuget Fable.Core
 nuget Fable.Import.Browser
+nuget Fable.SimpleJson
+nuget FSharp.Data 3.0.0-beta3
