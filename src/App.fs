@@ -44,12 +44,12 @@ type Fermentable =
       Ppg: int }
 
 let calculateSrm batchSize amount degreesLovibond = 
-    SrmColor degreesLovibond (TransformToDecimal amount) (TransformToDecimal batchSize)
+    SrmColor (TransformToFloat degreesLovibond) (TransformToFloat amount) (TransformToFloat batchSize)
     |> RoundToPrecisonTwo
     |> TransformToString
 
 let calculateEbc batchSize amount degreesLovibond = 
-    Ebc degreesLovibond (TransformToDecimal amount) (TransformToDecimal batchSize)
+    Ebc (TransformToFloat degreesLovibond) (TransformToFloat amount) (TransformToFloat batchSize)
     |> RoundToPrecisonTwo
     |> TransformToString
 
@@ -72,6 +72,10 @@ let getFermentables =
     |> Seq.sortBy(fun f -> f.Country)
     |> Seq.sortBy(fun f -> f.Name)
 
+let getDegreesLovibondForFermentable id =
+    let ferm = Seq.find(fun f -> f.Id = id) getFermentables
+    ferm.DegreesLovibond
+
 let FillInFermentables dropdownId (element: IJQuery) =
     for f in getFermentables do
         let newRow = String.Format("<option value={0}>{1} {2}</option>", f.Id, f.Country, f.Name)
@@ -88,13 +92,17 @@ let fillDropdown dropdownId =
 
 let init() = 
     fillDropdown "grain1"
+    fillDropdown "grain2"
+    fillDropdown "grain3"
+    fillDropdown "grain4"
+    fillDropdown "grain5"
     |> ignore
 
 let mainLoop ev =
     let batchSize = document.getElementById("batchSize")?value
     let amount1 = document.getElementById("amount1")?value
-    let grain1 = document.getElementById("grain1")?value
-    let degreesLovibond = 17.0m
+    let grain1 = TransformToInt(document.getElementById("grain1")?value)
+    let degreesLovibond = getDegreesLovibondForFermentable grain1
     let srm = calculateSrm batchSize amount1 degreesLovibond
     let ebc = calculateEbc batchSize amount1 degreesLovibond
     document.getElementById("srmResult")?innerHTML <- srm
