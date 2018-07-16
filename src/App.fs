@@ -4,11 +4,8 @@ open Fable.Core
 open Fable.Core.JsInterop
 open Fable.Import
 open Fable.Import.Browser
-open FSharp.Data
-open Fable.SimpleJson 
 open SrmCalculations
 open System
-open System.IO
 
 type IJQuery = 
     [<Emit("$0.click($1)")>]
@@ -23,7 +20,7 @@ module JQuery =
     let css (prop: string) (value: string) (el: IJQuery) : IJQuery = jsNative
       
     [<Emit("$1.click($0)")>]
-    let click (handler: obj -> unit)  (el: IJQuery) : IJQuery = jsNative
+    let click (handler: obj -> unit) (el: IJQuery) : IJQuery = jsNative
 
     [<Emit("window['$']($0)")>]
     let select (selector: string) : IJQuery = jsNative
@@ -36,6 +33,15 @@ module JQuery =
 
     [<Emit("$2.prop($0, $1)")>]
     let prop (property: string) (value: int) (el: IJQuery) : IJQuery = jsNative
+
+type Fermentable = 
+    { Id: int
+      Name: string
+      Country: string
+      Category: string
+      Type: string
+      DegreesLovibond: int
+      Ppg: int }
 
 let calculateSrm batchSize amount degreesLovibond = 
     SrmColor degreesLovibond (TransformToDecimal amount) (TransformToDecimal batchSize)
@@ -56,27 +62,33 @@ let fillColor (hexColor: string) =
     ctx.fillRect (10., 10., 55., 50.)
 
 [<Literal>]
-let FermentableFile = "C:\\Users\\melissaSusan\\source\\repos\\SrmCalculator\\src\\Fermentables.json"
+let FermentableFile = "file:\\\\C:\\Users\\melissaSusan\\source\\repos\\SrmCalculator\\src\\Fermentables.json" 
 
-type Fermentable = JsonProvider<FermentableFile>    
+let Fermentables = @"[ { ""Id"": 1,""Name"": ""Abbey Malt"",""Country"": ""German"",""Category"": ""Grain"",""Type"": ""Base Malt"",""DegreesLovibond"": 17,""Ppg"": 33  }]"
 
-let Fermentables = tryParse(File.ReadAllText(FermentableFile))
-    // |> Seq.sortBy(fun f -> f.Category)
-    // |> Seq.sortBy(fun f -> f.Country)
-    // |> Seq.sortBy(fun f -> f.Name)
+let getFermentables =
+    ofJson<Fermentable list> Fermentables
+    |> Seq.sortBy(fun f -> f.Category)
+    |> Seq.sortBy(fun f -> f.Country)
+    |> Seq.sortBy(fun f -> f.Name)
 
-let FillInFermentables (element: IJQuery) =
-    let mutable newElement = element
-    for f in Fermentables do
+let FillInFermentables dropdownId (element: IJQuery) =
+    for f in getFermentables do
         let newRow = String.Format("<option value={0}>{1} {2}</option>", f.Id, f.Country, f.Name)
-        newElement <- JQuery.append newRow element
+        JQuery.select("#"+dropdownId)
+        |> JQuery.append newRow
+        |> ignore
 
 let fillDropdown dropdownId = 
     JQuery.select("#"+dropdownId)
         |> JQuery.empty
         |> JQuery.append "<option selected disabled>Select Grain ...</option>"
         |> JQuery.prop "selectedIndex" 0
-        |> FillInFermentables
+        |> FillInFermentables dropdownId
+
+let init() = 
+    fillDropdown "grain1"
+    |> ignore
 
 let mainLoop ev =
     let batchSize = document.getElementById("batchSize")?value
@@ -87,9 +99,10 @@ let mainLoop ev =
     let ebc = calculateEbc batchSize amount1 degreesLovibond
     document.getElementById("srmResult")?innerHTML <- srm
     document.getElementById("ebcResult")?innerHTML <- ebc
-    fillDropdown("grain1")
     |> ignore
 
 JQuery.select("#calculate")
     .OnClick(mainLoop)
     |> ignore
+
+init()
