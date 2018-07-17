@@ -90,6 +90,9 @@ let fillDropdown dropdownId =
         |> JQuery.prop "selectedIndex" 0
         |> FillInFermentables dropdownId
 
+let setResult resultId value =
+    document.getElementById(resultId)?innerHTML <- value
+
 let init() = 
     fillDropdown "grain1"
     fillDropdown "grain2"
@@ -103,10 +106,11 @@ let mainLoop ev =
     let amount1 = document.getElementById("amount1")?value
     let grain1 = TransformToInt(document.getElementById("grain1")?value)
     let degreesLovibond = getDegreesLovibondForFermentable grain1
-    let srm = calculateSrm batchSize amount1 degreesLovibond
-    let ebc = calculateEbc batchSize amount1 degreesLovibond
-    document.getElementById("srmResult")?innerHTML <- srm
-    document.getElementById("ebcResult")?innerHTML <- ebc
+    calculateSrm batchSize amount1 degreesLovibond
+    |> setResult "srmResult"
+    |> ignore
+    calculateEbc batchSize amount1 degreesLovibond
+    |> setResult "ebcResult"
     |> ignore
 
 JQuery.select("#calculate")
