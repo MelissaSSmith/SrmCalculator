@@ -36,11 +36,11 @@ let MultiplyByConstant variable constant =
 let Mcu grainColor grainWeightLbs volGal  =
     (grainColor * grainWeightLbs) / volGal
 
-let SrmColor grainColor grainWeightLbs volGal =
-    Mcu grainColor grainWeightLbs volGal
+let SrmColor grainColorList grainWeightLbsList volGal =
+    List.zip grainWeightLbsList grainColorList
+    |> List.sumBy (fun (a, dl) -> Mcu dl a volGal)
     |> Power 0.6859
     |> MultiplyByConstant 1.4922
 
-let Ebc grainColor grainWeightLbs volGal = 
-    SrmColor grainColor grainWeightLbs volGal
-    |> MultiplyByConstant 1.97
+let Ebc srm = 
+    MultiplyByConstant srm 1.97

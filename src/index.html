@@ -11,27 +11,43 @@
 </head>
 
 <body>
-  <div>
+  <div class="container">
     <div id="inputs">
-      <input type="number" step="any" id="batchSize" placeholder="Batch Size (gallons)" value="" />
-      <input type="number" step="any" id="amount1" placeholder="Pounds" value="" />
-      <select id="grain1">
-        <option value="" disabled selected>Select Grain ...</option>
-      </select>
-      <select id="grain2">
-        <option value="" disabled selected>Select Grain ...</option>
-      </select>
-      <select id="grain3">
-        <option value="" disabled selected>Select Grain ...</option>
-      </select>
-      <select id="grain4">
-        <option value="" disabled selected>Select Grain ...</option>
-      </select>
-      <select id="grain5">
-        <option value="" disabled selected>Select Grain ...</option>
-      </select>
+      <div class="row">
+          <input type="number" step="any" id="batchSize" class="form-control" placeholder="Batch Size (gallons)" value="" />
+      </div>
+      <div class="row">
+          <input type="number" step="any" id="amount1"class="col form-control" placeholder="Pounds" value="" />
+          <select id="grain1" class="col form-control" >
+            <option value="" disabled selected>Select Grain ...</option>
+          </select>
+      </div>
+      <div class="row">
+          <input type="number" step="any" id="amount2" class="col form-control" placeholder="Pounds" value="" />
+          <select id="grain2"class="col form-control" >
+            <option value="" disabled selected>Select Grain ...</option>
+          </select>
+      </div>
+      <div class="row">
+          <input type="number" step="any" id="amount3" class="col form-control" placeholder="Pounds" value="" />
+          <select id="grain3"class="col form-control" >
+            <option value="" disabled selected>Select Grain ...</option>
+          </select>
+      </div>
+      <div class="row">
+          <input type="number" step="any" id="amount4" class="col form-control" placeholder="Pounds" value="" />
+          <select id="grain4"class="col form-control" >
+            <option value="" disabled selected>Select Grain ...</option>
+          </select>
+      </div>
+      <div class="row">
+          <input type="number" step="any" id="amount5" class="col form-control" placeholder="Pounds" value="" />
+          <select id="grain5" class="col form-control" >
+            <option value="" disabled selected>Select Grain ...</option>
+          </select>
+      </div>
     </div>
-    <button type="button" id="calculate">Calculate</button>
+    <button type="button" id="calculate" class="btn">Calculate</button>
     <div id="results">
       <div id="srmResult"></div>
       <div id="ebcResult"></div>
